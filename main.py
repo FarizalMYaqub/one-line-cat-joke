@@ -36,6 +36,10 @@ def write_entry(joke, path):
     with open(tmp_path, "w", encoding="utf-8") as handle:
         handle.write(joke)
     os.replace(tmp_path, path)
+    # Read-back verification: what landed on disk must be exactly the joke.
+    with open(path, "r", encoding="utf-8") as handle:
+        if handle.read() != joke:
+            raise ValueError("entry on disk does not match the joke")
     return len(joke)
 
 
